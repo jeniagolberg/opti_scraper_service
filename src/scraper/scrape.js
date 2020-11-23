@@ -52,10 +52,11 @@ var run = async function(page,links, requiredDepth){
     for(const link of links.split(',\n')){
         console.log(link)
         let currentLink = link;
+        let imdbId = link.split('/')[link.split('/').length - 1];
         do {
             try {
                 await page.goto(currentLink);
-                let data = await extract(page);
+                let data = await extract(page, {id: imdbId});
                 await save(data);
             } catch (err){
                console.log(err)
