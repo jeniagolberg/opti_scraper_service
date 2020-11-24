@@ -1,7 +1,7 @@
 
 
-const write = require('./json/local.db');
+const save = require('./json/local.db').writeToFile;
 
 module.exports = {
-    write
+    save
 }

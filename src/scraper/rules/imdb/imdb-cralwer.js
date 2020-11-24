@@ -1,5 +1,4 @@
-const dbService = require('./../../../db')
-
+const localSave = require('./../../../db/index').save;
 const logError = console.error;
 
 const serializeBudget = rawText => rawText.split(' ')[0].split(':')[1];
@@ -76,13 +75,17 @@ module.exports = {
      *  if false then no crawling is neseccery.
      *  currently returns false since for now we crawl a list of given links.
     */
-    goToNextPage: function(depth, driver, setNext) { 
-        return false
+    goToNextPage: async function(depth, driver, setNext) { 
+        return false;
     },
     /**
      * responsible for saving the data
      */
-    save: function(data){
-        dbService.write(data)
+    save: async function(data){
+        try {
+        await localSave(data);
+        } catch (err){
+            logError(err)
+        }
     }
 }
