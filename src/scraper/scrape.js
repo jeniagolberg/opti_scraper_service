@@ -7,10 +7,8 @@ const scrapeController = async function(req,res,next){
     let urls;
     if(!req.headers.start_urls){
         urls = require('./planB').loadLoaclySavedUrls();
-    }else if(!req.headers.start_urls.length) {
-        urls = [req.startUrls]
     }else{
-        urls = req.startUrls
+        urls = req.headers.start_urls
     }
 
     const browser = await puppeteer.launch();
