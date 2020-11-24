@@ -1,22 +1,27 @@
 const localSave = require('./../../../db/index').save;
 const logError = console.error;
+const FAILED_RETRIVAL_MSG = "No Record"
+const serializeBudget = rawText => rawText ? rawText.split(' ')[0].split(':')[1] : FAILED_RETRIVAL_MSG
 
-const serializeBudget = rawText => rawText.split(' ')[0].split(':')[1];
+const serializeCwg = rawText => rawText ? rawText.split(':')[1] : FAILED_RETRIVAL_MSG;
 
-const serializeCwg = rawText => rawText.split(':')[1];
-
-const serializeRuntime = rawText => rawText.split(':')[1]
+const serializeRuntime = rawText => rawText ? rawText.split(':')[1] : FAILED_RETRIVAL_MSG;
 
 const serializeReleaseDate = rawText => {
-    let day = rawText.match(/ \d{1,2} /)[0].replace(/ /g, '')
-    let month = rawText.match(/\s(?:January| February |March|April|May|June|July|August|September|October|November|December)\b/)[0].replace(/ /g, '');
-    let year = rawText.match(/\s*\d{4}/)[0].replace(/ /g, '')
 
-    return {day,month,year};
+    if(rawText) {
+        let day = rawText.match(/ \d{1,2} /)[0].replace(/ /g, '')
+        let month = rawText.match(/\s(?:January|February|March|April|May|June|July|August|September|October|November|December)\b/)[0].replace(/ /g, '');
+        let year = rawText.match(/\s*\d{4}/)[0].replace(/ /g, '')
+
+        return {day,month,year};
+    } else {
+        return FAILED_RETRIVAL_MSG;
+    }
 }
 
-const serializeGenres = rawText => rawText.split(":")[1]
-                                            .replace(/[ `~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "");
+const serializeGenres = rawText => rawText ? rawText.split(":")[1]
+                                            .replace(/[ `~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "") : FAILED_RETRIVAL_MSG;
 
 const getContext = (article,context) => article.split('\n').filter(ele => ele.startsWith(context))[0]
 
@@ -68,7 +73,11 @@ module.exports = {
      * extracts required data from a single page
      */
     extractImdbData: async function(page, id) {
-        console.log(await extractData(page, id));
+        try{
+            return await extractData(page, id);
+        } catch (err){
+            logError(err)
+        }
     },
     /**
      *  returns the next link to extract data from(when its from the page)
