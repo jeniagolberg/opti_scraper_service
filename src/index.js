@@ -28,7 +28,6 @@ app.get('/getMovieData', (req,res,next) => {
     }
 })
 
-
 app.listen(PORT, () => {
     console.log(`scraper listening on port: ${PORT}`);
 })

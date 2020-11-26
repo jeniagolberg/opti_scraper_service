@@ -1,6 +1,9 @@
 const localSave = require('./../../../db/index').save;
 const logError = console.error;
-const FAILED_RETRIVAL_MSG = "No Record"
+
+const FAILED_RETRIVAL_MSG = "No Record";
+
+
 const serializeBudget = rawText => rawText ? rawText.split(' ')[0].split(':')[1] : FAILED_RETRIVAL_MSG
 
 const serializeCwg = rawText => rawText ? rawText.split(':')[1] : FAILED_RETRIVAL_MSG;
@@ -24,7 +27,6 @@ const serializeGenres = rawText => rawText ? rawText.split(":")[1]
                                             .replace(/[ `~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, "") : FAILED_RETRIVAL_MSG;
 
 const getContext = (article,context) => article.split('\n').filter(ele => ele.startsWith(context))[0]
-
 
 // extracts data for : budget, realese date, Runtime, Cumulative Worldwide Gross / Generes
 const getArticleData = async (element, xpath) => {
