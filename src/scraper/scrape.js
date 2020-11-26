@@ -31,11 +31,16 @@ const run = async function(page, splitedLinks, requiredDepth){
         }
 
         let currentLink = link;
-        let imdbId = link.split('/')[link.split('/').length - 1];
+        let imdbId
+        if(link[link.length - 1] === "/"){
+            imdbId = link.split('/')[link.split('/').length - 2];
+        }else{ 
+            imdbId = link.split('/')[link.split('/').length - 1];
+        }
         do {
             try {
                 await page.goto(currentLink);
-                let data = await extract(page, {id: imdbId});
+                let data = await extract(page, imdbId);
                 await save(data);
             } catch (err){
                console.log(err)

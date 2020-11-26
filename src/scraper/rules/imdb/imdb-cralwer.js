@@ -64,7 +64,7 @@ const extractData = async (page, id) => {
     let storyLineText = await getArticleData(page, '//div[@id="titleStoryLine"]');
     let genres = await serializeGenres(getContext(storyLineText, "Genres:"));
 
-    return {budget,cwg,releaseDate,runtime,fullName,rating,genres,...id}
+    return {budget,cwg,releaseDate,runtime,fullName,rating,genres,id}
 }
 
 
